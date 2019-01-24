@@ -1,4 +1,4 @@
-[![GoDoc][doc-img]][doc]
+# :zapcontext: zapcontext [![GoDoc][doc-img]][doc]
 
 Simple utils for use zap logger with context.Context.
 

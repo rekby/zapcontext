@@ -8,11 +8,11 @@ import (
 type loggerContextMark struct{}
 
 // Return copy of ctx with assiciated logger
-func WithContext(ctx context.Context, l *zap.Logger) context.Context {
+func WithLogger(ctx context.Context, l *zap.Logger) context.Context {
 	return context.WithValue(ctx, loggerContextMark{}, l)
 }
 
-func WithContextSugar(ctx context.Context, l *zap.SugaredLogger) context.Context {
+func WithSugarLogger(ctx context.Context, l *zap.SugaredLogger) context.Context {
 	return context.WithValue(ctx, loggerContextMark{}, l)
 }
 

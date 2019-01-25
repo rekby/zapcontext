@@ -15,14 +15,14 @@ func TestAll(t *testing.T) {
 		}
 
 		l := zap.NewNop()
-		ctx := WithContext(context.Background(), l)
+		ctx := WithLogger(context.Background(), l)
 		l2 := L(ctx)
 
 		if l != l2 {
 			t.Error()
 		}
 
-		ctxSugar := WithContextSugar(context.Background(), zap.NewNop().Sugar())
+		ctxSugar := WithSugarLogger(context.Background(), zap.NewNop().Sugar())
 		if L(ctxSugar) == nil {
 			t.Error()
 		}
@@ -36,14 +36,14 @@ func TestAll(t *testing.T) {
 		}
 
 		l := zap.NewNop()
-		ctx := WithContext(context.Background(), l)
+		ctx := WithLogger(context.Background(), l)
 		l2 := LNop(ctx)
 
 		if l != l2 {
 			t.Error()
 		}
 
-		ctxSugar := WithContextSugar(context.Background(), zap.NewNop().Sugar())
+		ctxSugar := WithSugarLogger(context.Background(), zap.NewNop().Sugar())
 		if LNop(ctxSugar) == nil {
 			t.Error()
 		}
@@ -57,14 +57,14 @@ func TestAll(t *testing.T) {
 		}
 
 		l := zap.NewNop().Sugar()
-		ctx := WithContextSugar(context.Background(), l)
+		ctx := WithSugarLogger(context.Background(), l)
 		l2 := S(ctx)
 
 		if l != l2 {
 			t.Error()
 		}
 
-		ctxSugar := WithContext(context.Background(), zap.NewNop())
+		ctxSugar := WithLogger(context.Background(), zap.NewNop())
 		if S(ctxSugar) == nil {
 			t.Error()
 		}
@@ -78,14 +78,14 @@ func TestAll(t *testing.T) {
 		}
 
 		l := zap.NewNop().Sugar()
-		ctx := WithContextSugar(context.Background(), l)
+		ctx := WithSugarLogger(context.Background(), l)
 		l2 := SNop(ctx)
 
 		if l != l2 {
 			t.Error()
 		}
 
-		ctxSugar := WithContext(context.Background(), zap.NewNop())
+		ctxSugar := WithLogger(context.Background(), zap.NewNop())
 		if SNop(ctxSugar) == nil {
 			t.Error()
 		}

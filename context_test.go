@@ -2,15 +2,33 @@ package zc
 
 import (
 	"context"
-	"go.uber.org/zap"
 	"testing"
+
+	"go.uber.org/zap"
 )
 
 func TestAll(t *testing.T) {
-	t.Run("L", func(t *testing.T) {
-		t.Parallel()
 
-		if L(context.Background()) != nil {
+	defaultTestLogger, err := zap.NewDevelopment()
+	if err != nil {
+		t.Fatal(err)
+	}
+	SetDefaultLogger(defaultTestLogger)
+
+	if defaultSugaredLogger == nil {
+		t.Fatal(err)
+	}
+
+	t.Run("L", func(t *testing.T) {
+		if defaultLogger == nil {
+			t.Error()
+		}
+
+		if L(nil) != defaultLogger {
+			t.Error()
+		}
+
+		if L(context.Background()) != defaultLogger {
 			t.Error()
 		}
 
@@ -23,15 +41,21 @@ func TestAll(t *testing.T) {
 		}
 
 		ctxSugar := WithSugarLogger(context.Background(), zap.NewNop().Sugar())
-		if L(ctxSugar) == nil {
+		if L(ctxSugar) == defaultLogger || L(ctxSugar) == nil {
 			t.Error()
 		}
 	})
 
 	t.Run("LNop", func(t *testing.T) {
-		t.Parallel()
+		if nopLogger == nil {
+			t.Error()
+		}
 
-		if LNop(context.Background()) == nil {
+		if LNop(nil) != nopLogger {
+			t.Error()
+		}
+
+		if LNop(context.Background()) != nopLogger {
 			t.Error()
 		}
 
@@ -44,15 +68,17 @@ func TestAll(t *testing.T) {
 		}
 
 		ctxSugar := WithSugarLogger(context.Background(), zap.NewNop().Sugar())
-		if LNop(ctxSugar) == nil {
+		if LNop(ctxSugar) == nopLogger || LNop(ctxSugar) == nil {
 			t.Error()
 		}
 	})
 
 	t.Run("S", func(t *testing.T) {
-		t.Parallel()
+		if S(nil) != defaultSugaredLogger {
+			t.Error()
+		}
 
-		if S(context.Background()) != nil {
+		if S(context.Background()) != defaultSugaredLogger {
 			t.Error()
 		}
 
@@ -65,13 +91,15 @@ func TestAll(t *testing.T) {
 		}
 
 		ctxSugar := WithLogger(context.Background(), zap.NewNop())
-		if S(ctxSugar) == nil {
+		if S(ctxSugar) == nil || S(ctxSugar) == defaultSugaredLogger {
 			t.Error()
 		}
 	})
 
 	t.Run("SNop", func(t *testing.T) {
-		t.Parallel()
+		if SNop(nil) == nil {
+			t.Error()
+		}
 
 		if SNop(context.Background()) == nil {
 			t.Error()
@@ -86,7 +114,7 @@ func TestAll(t *testing.T) {
 		}
 
 		ctxSugar := WithLogger(context.Background(), zap.NewNop())
-		if SNop(ctxSugar) == nil {
+		if SNop(ctxSugar) == nil || SNop(ctxSugar) == defaultSugaredLogger {
 			t.Error()
 		}
 	})

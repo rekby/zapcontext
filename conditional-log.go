@@ -22,6 +22,7 @@ func logConditional(levelOK, levelError zapcore.Level, logger *zap.Logger, err e
 		level = levelOK
 	} else {
 		level = levelError
+		fields = append([]zap.Field{zap.Error(err)}, fields...)
 	}
 	logLevel(level, logger, msg, fields...)
 }
